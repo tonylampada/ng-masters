@@ -1,0 +1,52 @@
+<html>
+    <head>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+        <script>
+            function vaibuscarasissues(){
+                function GithubRepo(username, reponame){
+                    var list = "<tr><th>Numero</th><th>Titulo</th></tr>";
+                    var response = {
+                        busca_issues: function() {
+
+                            return $.get('https://api.github.com/repos/'+username+'/'+reponame+'/issues')
+                            .success(function(result) {
+                                $.each(result, function(index, value){
+                                    list += "<tr><td>"+value.number+"</td><td>"+value.title+"</td></tr>";
+                                });
+                                        return {success: function(acao){
+                                            acao();
+                                        }};
+
+                            });
+
+                        },
+                        popula_tabela: function(element){
+                            $(element).html(list);
+                        }
+                    }
+                    return response;
+                }
+
+                //mais um pouco de codigo aqui....
+                var username = $('#user').val();
+                var reponame = $('#reponame').val();
+                var le_repo = GithubRepo(username, reponame);
+                le_repo.busca_issues().success(function(){
+                    le_repo.popula_tabela("#issuestable");
+                });
+        }
+        </script>
+    </head>
+    <body>
+    Usuario <input type="text" id="user">
+    Repositório <input type="text" id="reponame">
+    <button onclick="vaibuscarasissues()">Vai buscar as issues</button>
+
+    <table id="issuestable">
+        <tr>
+            <th>Numero</th>
+            <th>Titulo</th>
+        </tr>
+    </table>
+</body>
+</html>
