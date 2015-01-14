@@ -3,34 +3,33 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
         <script>
             function vaibuscarasissues(){
-                function GithubRepo(username, reponame){
-                    var list = "<tr><th>Numero</th><th>Titulo</th></tr>";
-                    var response = {
-                        busca_issues: function() {
-
-                            return $.get('https://api.github.com/repos/'+username+'/'+reponame+'/issues')
-                            .success(function(result) {
-                                $.each(result, function(index, value){
-                                    list += "<tr><td>"+value.number+"</td><td>"+value.title+"</td></tr>";
-                                });
-                                        return {success: function(acao){
-                                            acao();
-                                        }};
-
-                            });
-
-                        },
-                        popula_tabela: function(element){
-                            $(element).html(list);
-                        }
-                    }
-                    return response;
+                function GithubRepo(username, reponame) {
+                    this.username = username;
+                    this.reponame = reponame;
+                    this.list = "<tr><th>Numero</th><th>Titulo</th></tr>";
                 }
+                GithubRepo.prototype.busca_issues = function() {
+                    var self = this;
+                    return $.get('https://api.github.com/repos/'+this.username+'/'+this.reponame+'/issues')
+                    .success(function(result) {
+                        $.each(result, function(index, value){
+                            self.list += "<tr><td>"+value.number+"</td><td>"+value.title+"</td></tr>";
+                        });
+                        return {success: function(acao){
+                            acao();
+                        }};
+                    });
+
+                };
+                GithubRepo.prototype.popula_tabela = function(element){
+                    $(element).html(list);
+                };
+
 
                 //mais um pouco de codigo aqui....
                 var username = $('#user').val();
                 var reponame = $('#reponame').val();
-                var le_repo = GithubRepo(username, reponame);
+                var le_repo = new GithubRepo(username, reponame);
                 le_repo.busca_issues().success(function(){
                     le_repo.popula_tabela("#issuestable");
                 });
