@@ -8,7 +8,7 @@
                     var response = {
                         busca_issues: function() {
 
-                            return $.get('https://api.github.com/repos/freedomsponsors/www.freedomsponsors.org/issues')
+                            return $.get('https://api.github.com/repos/'+username+'/'+reponame+'/issues')
                             .success(function(result) {
                                 $.each(result, function(index, value){
                                     list += "<tr><td>"+value.number+"</td><td>"+value.title+"</td></tr>";
