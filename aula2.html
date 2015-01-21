@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+        <script src="angular.min.js"></script>
+        <script src="aula2.js"></script>
+    </head>
+    <body ng-app="angulife" ng-controller="AnguLifeCtrl">
+        <div class="container">
+            <div class="form-group">
+                <label for="lines">Linhas:</label><input ng-change="update_matrix()" class="form-control" id="lines" type="number" ng-model="lines">
+                <label for="columns">Colunas:</label><input ng-change="update_matrix()" class="form-control" id="colunms" type="number" ng-model="columns">
+                <label for="wait_step">Tempo do passo (ms):</label><input class="form-control" id="wait_step" type="number" ng-model="wait_step">
+            </div>
+            <button class="btn btn-primary" ng-click="start_angulife()">Iniciar Angulife</button>
+            <button class="btn btn-primary" ng-click="update_matrix()">Limpa Angulife</button>
+            <table class="table table-bordered">
+                <tbody>
+                    <tr ng-repeat="line in matrix">
+                    <td ng-repeat="cell in line" ng-class="{success: matrix[cell.line][cell.col].value}" ng-click="toggle_alive(cell)">
+                            <div style="height:20px; width:20px;"></div>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
