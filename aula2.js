@@ -6,56 +6,57 @@
 		Global.angular_dependencies = [];
 	}
 	angulife = angular.module('angulife', Global.angular_dependencies);
-	angulife.controller('AnguLifeCtrl',function ($scope){
-		$scope.matrix = [];
 
-		$scope.has_live_cell = 0;
-		$scope.no_change = 0;
-		$scope.changed = false;
-		$scope.matrix_changed = false;
-		$scope.wait_step = 500;
-
-		$scope.update_matrix = function(){
-			$scope.matrix = [];
-			for(var i = 0; i < $scope.lines; i++){
+	angulife.factory('AngulifeService', ['$rootScope', function($rootScope){
+    	var context = {
+			matrix: [],
+			has_live_cell: 0,
+			no_change: 0,
+			changed: false,
+			matrix_changed: false,
+			wait_step: 500
+		};
+		context.update_matrix = function(){
+			context.matrix = [];
+			for(var i = 0; i < context.lines; i++){
 				var line = [];
-				for(var j = 0; j < $scope.columns; j++){
+				for(var j = 0; j < context.columns; j++){
 					line.push({value:false,
 								line:i,
 								col:j});
 				}
-				$scope.matrix.push(line);
+				context.matrix.push(line);
 			}
 		};
 
-		$scope.toggle_alive = function(cell){
-			$scope.matrix[cell.line][cell.col].value = !cell.value;
+		context.toggle_alive = function(cell){
+			context.matrix[cell.line][cell.col].value = !cell.value;
 			if(cell.value){
-				$scope.has_live_cell ++;
+				context.has_live_cell ++;
 			}else{
-				$scope.has_live_cell --;
+				context.has_live_cell --;
 			}
 		};
 
-		$scope.start_angulife = function(){
-			$scope.no_change = 0;
+		context.start_angulife = function(){
+			context.no_change = 0;
 			var interval = setInterval(function(){
-				$scope.matrix_changed = false;
+				context.matrix_changed = false;
 				var new_matrix = []
-				for(var i = 0; i < $scope.lines; i++){
+				for(var i = 0; i < context.lines; i++){
 					var new_line = [];
-					for(var j = 0; j < $scope.columns; j++){
-						$scope.changed = false;
-						var count = $scope.neighbours_count(i, j);
-						if($scope.matrix[i][j].value){
+					for(var j = 0; j < context.columns; j++){
+						context.changed = false;
+						var count = context.neighbours_count(i, j);
+						if(context.matrix[i][j].value){
 							if(count < 2 || count > 3){
 								new_line.push({
-												line: i,
-												col: j,
-												value: false
-											});
-								$scope.has_live_cell --;
-								$scope.changed = true;
+									line: i,
+									col: j,
+									value: false
+								});
+								context.has_live_cell --;
+								context.changed = true;
 							}
 						}else{
 							if(count == 3){
@@ -64,39 +65,39 @@
 									col: j,
 									value: true
 								});
-								$scope.has_live_cell ++;
-								$scope.changed = true;
+								context.has_live_cell ++;
+								context.changed = true;
 							}
 						}
-						if(!$scope.changed){
-							new_line.push($scope.matrix[i][j]);
+						if(!context.changed){
+							new_line.push(context.matrix[i][j]);
 						}else{
-							$scope.matrix_changed = true;
+							context.matrix_changed = true;
 						}
 					}
 					new_matrix.push(new_line);
 				}
-				$scope.matrix = new_matrix;
-				$scope.$digest();
-				if(!$scope.matrix_changed){
-					$scope.no_change ++;
+				context.matrix = new_matrix;
+				$rootScope.$digest();
+				if(!context.matrix_changed){
+					context.no_change ++;
 				}
-				if($scope.has_live_cell==0 || $scope.no_change > 3){
+				if(context.has_live_cell==0 || context.no_change > 3){
 					clearInterval(interval);
 					alert('Angulife finished!');
 				}
-			}, $scope.wait_step);
+			}, context.wait_step);
 		};
 
-		$scope.neighbours_count = function(i, j){
+		context.neighbours_count = function(i, j){
 			var neighbours = 0;
 			for(var a = i-1; a < i+2; a++){
 				for(var b = j-1; b < j+2; b++){
-					if(a<0 || b<0 || a==$scope.lines || b == $scope.columns){
+					if(a<0 || b<0 || a==context.lines || b == context.columns){
 						continue;
 					}
 					if(a!=i || b !=j){
-						if($scope.matrix[a][b].value){
+						if(context.matrix[a][b].value){
 							neighbours ++;
 						}
 					}
@@ -104,5 +105,10 @@
 			}
 			return neighbours;
 		};
+		return context;
+	}]);
+
+	angulife.controller('AnguLifeCtrl',function ($scope, AngulifeService){
+		$scope.context = AngulifeService;
 	});
 })();
