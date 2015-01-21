@@ -15,16 +15,16 @@
     <body ng-app="angulife" ng-controller="AnguLifeCtrl">
         <div class="container">
             <div class="form-group">
-                <label for="lines">Linhas:</label><input ng-change="update_matrix()" class="form-control" id="lines" type="number" ng-model="lines">
-                <label for="columns">Colunas:</label><input ng-change="update_matrix()" class="form-control" id="colunms" type="number" ng-model="columns">
-                <label for="wait_step">Tempo do passo (ms):</label><input class="form-control" id="wait_step" type="number" ng-model="wait_step">
+                <label for="lines">Linhas:</label><input ng-change="context.update_matrix()" class="form-control" id="lines" type="number" ng-model="context.lines">
+                <label for="columns">Colunas:</label><input ng-change="context.update_matrix()" class="form-control" id="colunms" type="number" ng-model="context.columns">
+                <label for="wait_step">Tempo do passo (ms):</label><input class="form-control" id="wait_step" type="number" ng-model="context.wait_step">
             </div>
-            <button class="btn btn-primary" ng-click="start_angulife()">Iniciar Angulife</button>
-            <button class="btn btn-primary" ng-click="update_matrix()">Limpa Angulife</button>
+            <button class="btn btn-primary" ng-click="context.start_angulife()">Iniciar Angulife</button>
+            <button class="btn btn-primary" ng-click="context.update_matrix()">Limpa Angulife</button>
             <table class="table table-bordered">
                 <tbody>
-                    <tr ng-repeat="line in matrix">
-                    <td ng-repeat="cell in line" ng-class="{success: matrix[cell.line][cell.col].value}" ng-click="toggle_alive(cell)">
+                    <tr ng-repeat="line in context.matrix">
+                    <td ng-repeat="cell in line" ng-class="{success: context.matrix[cell.line][cell.col].value}" ng-click="context.toggle_alive(cell)">
                             <div style="height:20px; width:20px;"></div>
                     </tr>
                 </tbody>
