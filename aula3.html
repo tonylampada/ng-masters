@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+        <script src="angular.min.js"></script>
+        <script src="/js/messages.js"></script>
+        <script src="aula3.js"></script>
+    </head>
+    <body ng-app="messages-app" ng-controller="MessageController">
+        <message-alert></message-alert>
+        <message-popup></message-popup>
+
+        <div class="container">
+            <div class="page-header">
+                <h1>Aula 3 ng-masters</h1>
+            </div>
+            <div class="jumbotron">
+                <button type="button" class="btn btn-primary btn-lg" ng-click="error()">Errar</button>
+                <button type="button" class="btn btn-primary btn-lg" ng-click="load()">Carregar</button>
+            </div>
+        </div>
+    </body>
+</html>
