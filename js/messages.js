@@ -18,7 +18,8 @@ angular.module('messages').factory('MessagesService', ['$rootScope', function($r
     messages.showPopup = function(messageType, message){
         this.title = messageType;
         this.content = message;
-        $('#myModal').modal();
+        this.popup_visible = true;
+        // $('#myModal').modal();
     };
     return messages;
 }]);
